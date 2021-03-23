@@ -3,6 +3,7 @@ package me.js.async.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.js.async.repository.CoffeeRepository;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.CompletableFuture;
@@ -37,7 +38,10 @@ public class CoffeeUseServiceImpl implements CoffeeUseService {
 
     @Override
     public CompletableFuture<Integer> getDiscountPriceAsync(Integer price) {
-        return null;
+        return CompletableFuture.supplyAsync(()->{
+            log.info("SupplyAsync2");
+            return (int)(price * 0.9);
+        }, executor);
     }
 }
 

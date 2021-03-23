@@ -37,6 +37,16 @@ class CoffeeUseServiceImplTest {
         logger.info("최종 가격을 전달받음 : {}", (lattePrice + americanoPrice));
      }
 
+    @Test
+    void 비동기_블록킹_호출_theCombine() {
+        CompletableFuture<Integer> latteFuture = coffeeUseService.getPriceAsync("latte");
+        CompletableFuture<Integer> americanoFuture = coffeeUseService.getPriceAsync("americano");
+        logger.info("작업이 수행중...");
+
+        Integer sum = latteFuture.thenCombine(americanoFuture, Integer::sum).join(); // 블록킹
+        logger.info("최종 가격을 전달받음 : {}", sum);
+    }
+
     // thenAccept -> 데이터를 반환하지 않음
     @Test
     void 비동기_논블록킹_호출_콜백_thenAccept() {
@@ -63,9 +73,17 @@ class CoffeeUseServiceImplTest {
                     logger.info("콜백 : 가격은 " + p + "원 (아직 데이터를 반환하지 않음)");
                 });
 
-
         logger.info("최종 데이터를 받지 않았지만, 다른 작업을 수행중... (논블록킹)");
-        logger.info(String.valueOf(mochaFuture.join())); // 메인 쓰레드를 종료시키지 않기 위해 작성한 임시코드 (운영에서는 필요없음);
+        System.out.println(mochaFuture.join()); // 메인 쓰레드를 종료시키지 않기 위해 작성한 임시코드 (운영에서는 필요없음);
+    }
+
+    @Test
+    void thenCompose_테스트() {
+        CompletableFuture<Integer> latteFuture = coffeeUseService.getPriceAsync("latte");
+        Integer lattePrice = latteFuture
+                .thenCompose(result -> coffeeUseService.getDiscountPriceAsync(result))
+                .join();
+        logger.info("latte 할인 가격 : {}", lattePrice);
     }
 
 
