@@ -3,12 +3,13 @@ package me.js.async.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.js.async.repository.CoffeeRepository;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
 
 @Slf4j
 @Service
@@ -17,7 +18,7 @@ public class CoffeeUseServiceImpl implements CoffeeUseService {
 
     private final CoffeeRepository coffeeRepository;
 
-    Executor executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+    private Executor executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     @Override
     public int getPrice(String name) {
