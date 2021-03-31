@@ -16,7 +16,7 @@ public class AsyncController {
     private AsyncTestService asyncTestService;
 
     @GetMapping("/async")
-    public String async() {
+    public String async() { 
         asyncTestService.onAsync();
 
         log.info("async controller");

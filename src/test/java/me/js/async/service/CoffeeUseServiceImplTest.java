@@ -21,6 +21,7 @@ class CoffeeUseServiceImplTest {
         int americanoPrice = coffeeUseService.getPrice("americano");
         int lattePrice = coffeeUseService.getPrice("latte");
 
+
         logger.info("아메리카노 가격 : {}", americanoPrice);
         logger.info("라떼 가격 : {}" , lattePrice);
         logger.info("최종 가격 : {}" , (americanoPrice + lattePrice));
